@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPS Delivery Helper</title>
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+
+<img src="./images/logo.png" alt="UPS" class="ups-logo">
+
+<h1>UPS Delivery Helper</h1>
+
+<div class="form-group">
+    <input type="text" id="start" placeholder="Zadej startovní a konečnou adresu">
+    <input type="text" id="delivery" placeholder="Zadej adresu zásilky (město, firma, adresa)">
+    <button id="add-delivery">Přidat adresu</button>
+    <button id="resetRoute">Nová trasa</button>
+    <button id="optimizeRoute">Optimalizovat trasu</button>
+    <button id="endRoute">Konec trasy</button>
+</div>
+
+<div id="main-content">
+    <div id="map"></div>
+
+    <div class="right-panel">
+        <div class="delivery-box">
+            <h2>Zásilky</h2>
+            <ul id="deliveryList"></ul>
+        </div>
+        <div id="routeList"></div>
+    </div>
+</div>
+
+<div id="summary-box" style="display: none;">
+    <h2>Shrnutí trasy</h2>
+    <div id="deliveredSummary">
+        <h3>Doručené zásilky ✅</h3>
+        <ul id="deliveredList"></ul>
+    </div>
+    <div id="undeliveredSummary">
+        <h3>Nedoručené zásilky ❌</h3>
+        <ul id="undeliveredList"></ul>
+    </div>
+</div>
+
+<audio id="delivery-sound">
+    <source src="./audio/delivery.mp3" type="audio/mpeg">
+</audio>
+
+<footer>
+    <p>Vytvořil: Michal Přeček | Verze 1.0</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="./js/main.js"></script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC87wPvdnYbDDjUbXbJpB3ETpfYgy7JgvM&libraries=places&callback=initMap"></script>
+</body>
+</html>

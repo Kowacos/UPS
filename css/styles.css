@@ -1,0 +1,390 @@
+:root {
+    --ups-brown: #351C15;
+    --ups-gold: #FFB500;
+    --text-on-brown: #ffffff;
+}
+
+body {
+    background: var(--ups-brown);
+    color: var(--text-on-brown);
+    font-family: "Inconsolata";
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../images/logo-big.png");
+    background-size: 800px auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.1;
+    z-index: -1;
+}
+
+.ups-logo {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 80px;
+    height: 80px;
+    z-index: 1000;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,.35));
+}
+
+h1, h2 {
+    color: var(--text-on-brown);
+    text-align: center;
+    font-family: "Inconsolata";
+    margin: 20px 0;
+    font-weight: bold;
+}
+
+h1 {
+    margin-top: 120px;
+    font-size: 2.5em;
+}
+
+h2 {
+    font-size: 1.8em;
+    border-bottom: 2px solid var(--ups-gold);
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 20px auto;
+    max-width: 90%;
+    padding: 10px;
+}
+
+.form-group input {
+    flex: 1 1 100%;
+    max-width: 500px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.3);
+    font-size: 16px;
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    outline: none;
+}
+
+.form-group input::placeholder {
+    color: rgba(255,255,255,0.75);
+}
+
+.form-group button {
+    flex: 0 0 100%;
+    max-width: 150px;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    background: var(--ups-gold);
+    color: #000;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+}
+
+.form-group button:hover {
+    opacity: 0.9;
+}
+
+#resetRoute {
+    background: #b23a3a;
+    color: #fff;
+}
+
+#resetRoute:hover {
+    filter: brightness(1.05);
+}
+
+#endRoute {
+    background: #5e8c4a;
+    color: #fff;
+}
+
+#endRoute:hover {
+    filter: brightness(1.05);
+}
+
+/* PŮVODNÍ LAYOUT - VÝCHOZÍ */
+#main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+#map, .delivery-box, #routeList {
+    margin: 20px auto;
+}
+
+/* NOVÝ LAYOUT PO OPTIMALIZACI */
+.optimized-layout {
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.optimized-layout #map,
+.optimized-layout .delivery-box,
+.optimized-layout #routeList,
+.optimized-layout .right-panel {
+    margin: 0;
+}
+
+.optimized-layout #map {
+    width: 60%;
+    height: 600px;
+}
+
+.optimized-layout .right-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+    max-width: 520px;
+}
+
+/* BOX PRO ZÁSILKY */
+.delivery-box {
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 12px;
+    padding: 15px;
+    background: rgba(0,0,0,0.25);
+    max-width: 90%;
+    width: 520px;
+}
+
+.optimized-layout .delivery-box {
+    width: 100%;
+}
+
+#deliveryList {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.delivery-item {
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 10px;
+    margin: 6px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border-radius: 8px;
+    background: rgba(0,0,0,0.18);
+}
+
+.delivery-item .address {
+    flex: 1;
+    margin-bottom: 8px;
+}
+
+.delivery-buttons {
+    display: flex;
+    gap: 6px;
+    align-self: flex-end;
+}
+
+.delivery-buttons button {
+    flex: 0 0 35px;
+    font-size: 18px;
+    padding: 6px;
+    text-align: center;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+}
+
+/* BOX PRO DŮVOD NEDORUČENÍ */
+.reason-box {
+    display: none;
+    width: 100%;
+    max-width: 300px;
+    margin-top: 8px;
+    padding: 8px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 6px;
+}
+
+.reason-box input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    font-size: 14px;
+}
+
+/* MAPA */
+#map {
+    width: 90%;
+    max-width: 800px;
+    height: 400px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    background: #fff;
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+}
+
+/* DŮLEŽITÁ OPRAVA */
+#map:hover {
+    opacity: 1;
+}
+
+/* OPTIMALIZOVANÁ TRASA */
+#routeList {
+    padding: 12px;
+    background: rgba(0,0,0,0.25);
+    border: 3px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    max-width: 90%;
+    width: 520px;
+    color: var(--text-on-brown);
+}
+
+.optimized-layout #routeList {
+    width: 100%;
+}
+
+#routeList h3 {
+    margin: 0 0 10px 0;
+}
+
+#routeList ul {
+    list-style: none;
+    padding: 0;
+}
+
+#routeList li {
+    padding: 5px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+#routeList .timestamp {
+    color: #ddd;
+    margin-left: 12px;
+}
+
+/* BOX PRO SOUHRN TRASY (nový) */
+#summary-box {
+    margin: 20px auto;
+    padding: 20px;
+    background: rgba(0,0,0,0.25);
+    border: 3px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    max-width: 90%;
+    width: 520px;
+    color: var(--text-on-brown);
+}
+
+#summary-box h2 {
+    border-bottom: 2px solid var(--ups-gold);
+    padding-bottom: 8px;
+}
+
+#summary-box h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+#summary-box ul {
+    list-style: none;
+    padding: 0;
+}
+
+#summary-box li {
+    background: rgba(255,255,255,0.08);
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+
+footer {
+    margin-top: 20px;
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+    color: #ddd;
+}
+
+footer hr {
+    margin-bottom: 10px;
+}
+
+@media (max-width: 900px) {
+    .optimized-layout {
+        flex-direction: column;
+    }
+
+    .optimized-layout #map {
+        width: 100%;
+        height: 400px;
+    }
+
+    .optimized-layout .right-panel {
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .ups-logo {
+        width: 60px;
+        height: 60px;
+        top: 5px;
+        right: 5px;
+    }
+
+    h1 {
+        margin-top: 80px;
+        font-size: 2em;
+    }
+
+    .form-group {
+        flex-direction: column;
+    }
+
+    .form-group button {
+        max-width: 100%;
+    }
+
+    #map {
+        height: 300px;
+    }
+
+    body::before {
+        background-size: 150px auto;
+    }
+
+    .reason-box {
+        max-width: 100%;
+    }
+}
