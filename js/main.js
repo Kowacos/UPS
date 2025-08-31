@@ -28,9 +28,13 @@ function initMap() {
     autocompleteDelivery.bindTo("bounds", map);
 
     document.getElementById("add-delivery").addEventListener("click", addDelivery);
-    document.getElementById("resetRoute").addEventListener("click", resetRoute);
     document.getElementById("optimizeRoute").addEventListener("click", optimizeRoute);
     document.getElementById("endRoute").addEventListener("click", endRoute);
+    document.getElementById("resetRoute").addEventListener("click", resetRoute);
+
+    // Skrytí tlačítka "Konec trasy" a "Optimalizovat trasu" na začátku
+    document.getElementById("endRoute").style.display = "none";
+    document.getElementById("optimizeRoute").style.display = "none";
 
     deliveryInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
@@ -41,10 +45,10 @@ function initMap() {
 
     document.querySelectorAll(".form-group button").forEach(button => {
         button.addEventListener("mouseenter", () => {
-            gsap.to(button, { scale: 1.05, duration: 0.3, ease: "power2.out" });
+            gsap.to(button, { scale: 1.05, duration: 0.8, ease: "power2.out" });
         });
         button.addEventListener("mouseleave", () => {
-            gsap.to(button, { scale: 1, duration: 0.3, ease: "power2.out" });
+            gsap.to(button, { scale: 1, duration: 0.8, ease: "power2.out" });
         });
     });
 }
@@ -74,6 +78,11 @@ function addDelivery() {
 
             addDeliveryToList(results[0].formatted_address);
             document.getElementById("delivery").value = "";
+
+            // Zobrazit tlačítka po přidání první zásilky
+            if (deliveryPoints.length > 0) {
+                document.getElementById("optimizeRoute").style.display = "block";
+            }
         } else {
             alert("Nepodařilo se najít adresu: " + status);
         }
@@ -208,6 +217,7 @@ function resetRoute() {
     const mainContent = document.getElementById("main-content");
     const mapDiv = document.getElementById("map");
     const rightPanel = document.querySelector(".right-panel");
+    const formGroup = document.querySelector(".form-group");
 
     gsap.to(mapDiv, {
         width: "90%",
@@ -232,7 +242,7 @@ function resetRoute() {
         ease: "power4.inOut",
         onComplete: () => {
             mainContent.classList.remove("optimized-layout");
-            document.querySelector(".form-group").style.display = "flex";
+            formGroup.style.display = "flex";
             document.querySelector(".delivery-box").style.display = "block";
             document.getElementById("map").style.display = "block";
         }
@@ -245,6 +255,15 @@ function resetRoute() {
     document.getElementById("routeList").innerHTML = "";
     document.getElementById("summary-box").style.display = "none";
 
+    document.getElementById("add-delivery").style.display = "block";
+    document.getElementById("optimizeRoute").style.display = "none";
+    document.getElementById("endRoute").style.display = "none";
+
+    const newRouteBtnContainer = document.getElementById("newRouteBtnContainer");
+    if (newRouteBtnContainer) {
+        newRouteBtnContainer.style.display = "none";
+    }
+
     directionsRenderer.set("directions", null);
 
     markers.forEach(m => m.setMap(null));
@@ -254,13 +273,18 @@ function resetRoute() {
     if (endMarker) { endMarker.setMap(null); endMarker = null; }
 
     document.getElementById("start").value = "";
+    document.getElementById("delivery").value = "";
 }
 
 function optimizeRoute() {
     const start = document.getElementById("start").value.trim();
 
     if (!start) {
-        alert("Zadej startovní a konečnou adresu!");
+        alert("Zadej startovní adresu!");
+        return;
+    }
+    if (deliveryPoints.length === 0) {
+        alert("Nejdříve přidej alespoň jednu zásilku.");
         return;
     }
 
@@ -315,13 +339,16 @@ function optimizeRoute() {
             const mapDiv = document.getElementById("map");
             const rightPanel = document.querySelector(".right-panel");
 
-            // GSAP Timeline pro plynulý přechod
+            document.getElementById("add-delivery").style.display = "none";
+            document.getElementById("optimizeRoute").style.display = "none";
+            document.getElementById("endRoute").style.display = "block";
+
             const tl = gsap.timeline();
             tl.to(mainContent, {
                 flexDirection: "row",
                 alignItems: "flex-start",
                 justifyContent: "center",
-                duration: 0.8,
+                duration: 1.5,
                 ease: "power4.inOut"
             }, 0);
 
@@ -329,16 +356,23 @@ function optimizeRoute() {
                 width: "60%",
                 maxWidth: "700px",
                 height: "600px",
-                duration: 0.8,
+                duration: 1.5,
                 ease: "power4.inOut"
             }, 0);
 
             tl.to(rightPanel, {
                 width: "40%",
                 maxWidth: "520px",
-                duration: 0.8,
+                duration: 1.5,
                 ease: "power4.inOut"
             }, 0);
+
+            gsap.to({}, {
+                duration: 1.5,
+                onComplete: () => {
+                    google.maps.event.trigger(map, 'resize');
+                }
+            });
 
             mainContent.classList.add("optimized-layout");
 
@@ -390,6 +424,18 @@ function endRoute() {
         duration: 0.8,
         ease: "power2.out"
     });
+
+    const newRouteBtnContainer = document.getElementById("newRouteBtnContainer");
+    if (newRouteBtnContainer) {
+        newRouteBtnContainer.style.display = "flex";
+        gsap.from(newRouteBtnContainer, {
+            opacity: 0,
+            y: 20,
+            duration: 0.8,
+            ease: "power2.out",
+            delay: 1
+        });
+    }
 }
 
 window.initMap = initMap;

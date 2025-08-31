@@ -12,11 +12,10 @@
 
 <h1>UPS Delivery Helper</h1>
 
-<div class="form-group">
+<div class="form-group" id="main-buttons">
     <input type="text" id="start" placeholder="Zadej startovní a konečnou adresu">
     <input type="text" id="delivery" placeholder="Zadej adresu zásilky (město, firma, adresa)">
     <button id="add-delivery">Přidat adresu</button>
-    <button id="resetRoute">Nová trasa</button>
     <button id="optimizeRoute">Optimalizovat trasu</button>
     <button id="endRoute">Konec trasy</button>
 </div>
@@ -42,6 +41,9 @@
     <div id="undeliveredSummary">
         <h3>Nedoručené zásilky ❌</h3>
         <ul id="undeliveredList"></ul>
+    </div>
+    <div id="newRouteBtnContainer">
+        <button id="resetRoute">Nová trasa</button>
     </div>
 </div>
 
